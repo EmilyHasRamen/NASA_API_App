@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "scheme": "acme",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "NASA_API_App",
+    "slug": "NASA_API_App"
+  }
+}
