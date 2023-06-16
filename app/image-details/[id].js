@@ -4,6 +4,7 @@ import {
   Text,
   SafeAreaView,
   ScrollView,
+  Image
 } from "react-native";
 
 import axios from 'axios';

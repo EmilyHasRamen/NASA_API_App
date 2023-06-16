@@ -51,7 +51,7 @@ const ImageSearch = () => {
         router.push({
             pathname: `/image-details/${item.data[0].nasa_id}`,
              params: {
-                img: item.links[0],
+                img: item.links[0].href,
                 title: item.data[0].title,
                 desc: item.data[0].description,
                 date: item.data[0].date_created
