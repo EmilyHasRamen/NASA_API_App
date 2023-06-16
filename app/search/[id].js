@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, FlatList, Image, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, FlatList, Image, TouchableOpacity, View, Text, SafeAreaView  } from 'react-native'
 import { Stack, useRouter, useSearchParams } from 'expo-router'
-import { Text, SafeAreaView } from 'react-native'
 import axios from 'axios'
 
 import { ScreenHeaderBtn } from '../../components'
@@ -10,12 +9,11 @@ import styles from '../../styles/search'
 
 const ImageSearch = () => {
     const params = useSearchParams();
-    const router = useRouter()
+    const router = useRouter();
 
     const [images, setImages] = useState([]);
     const [searchLoader, setSearchLoader] = useState(false);
     const [searchError, setSearchError] = useState(null);
-    const [page, setPage] = useState(1);
 
     const handleSearch = async () => {
         setSearchLoader(true);
@@ -42,21 +40,25 @@ const ImageSearch = () => {
     };
 
     const renderImageItem = ({ item }) => (
-        <View style={styles.imageContainer}>
-            <Image source={{ uri: item.links[0].href }} style={styles.image} />
-            <Text style={styles.title}>{item.data[0].title}</Text>
-        </View>
+
+            <TouchableOpacity style={styles.cardContainer} onPress={() => handleCardPress(item)}>
+                <Image source={{ uri: item.links[0].href }} style={styles.image} />
+                <Text style={styles.title}>{item.data[0].title}</Text>
+            </TouchableOpacity>
       );
+    
+    const handleCardPress = (item) => {
+        router.push({
+            pathname: `/image-details/${item.data[0].nasa_id}`,
+             params: {
+                img: item.links[0],
+                title: item.data[0].title,
+                desc: item.data[0].description,
+                date: item.data[0].date_created
+            }
+        });
+    };
       
-    const handlePagination = (direction) => {
-        if (direction === 'left' && page > 1) {
-            setPage(page - 1)
-            handleSearch()
-        } else if (direction === 'right') {
-            setPage(page + 1)
-            handleSearch()
-        }
-    }
 
     useEffect(() => {
         handleSearch()
@@ -86,7 +88,11 @@ const ImageSearch = () => {
                 data={images}
                 keyExtractor={item => item.data[0].nasa_id}
                 renderItem={renderImageItem}
-                contentContainerStyle={{ padding: SIZES.medium, rowGap: SIZES.medium }}
+                contentContainerStyle={{ 
+                    padding: SIZES.medium,
+                    rowGap: SIZES.medium,
+                    flexGrow: 1,
+                    justifyContent: 'center' }}
                 ListHeaderComponent={() => (
                     <>
                         <View style={styles.loaderContainer}>
@@ -97,33 +103,6 @@ const ImageSearch = () => {
                             )}
                         </View>
                     </>
-                )}
-                ListFooterComponent={() => (
-                    <View style={styles.footerContainer}>
-                        <TouchableOpacity
-                            style={styles.paginationButton}
-                            onPress={() => handlePagination('left')}
-                        >
-                            <Image
-                                source={icons.chevronLeft}
-                                style={styles.paginationImage}
-                                resizeMode="contain"
-                            />
-                        </TouchableOpacity>
-                        <View style={styles.paginationTextBox}>
-                            <Text style={styles.paginationText}>{page}</Text>
-                        </View>
-                        <TouchableOpacity
-                            style={styles.paginationButton}
-                            onPress={() => handlePagination('right')}
-                        >
-                            <Image
-                                source={icons.chevronRight}
-                                style={styles.paginationImage}
-                                resizeMode="contain"
-                            />
-                        </TouchableOpacity>
-                    </View>
                 )}
             />
         </SafeAreaView>

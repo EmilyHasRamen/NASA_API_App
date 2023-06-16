@@ -4,8 +4,16 @@ import { COLORS, FONT, SIZES } from "../constants";
 
 const styles = StyleSheet.create({
     container: {
-        width: "100%",
+        width: '100%',
     },
+    cardContainer: {
+        width: '80%',
+        padding: SIZES.xLarge,
+        backgroundColor: '#FFF',
+        borderRadius: SIZES.medium,
+        justifyContent: 'space-between',
+        shadowColor: COLORS.white,
+      },
     searchTitle: {
         fontFamily: FONT.bold,
         fontSize: SIZES.xLarge,
