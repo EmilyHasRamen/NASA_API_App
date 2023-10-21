@@ -1,6 +1,6 @@
 
 ## Installation
-first install all the necessary packages
+First install all the necessary packages
   ```sh
   npm install npm@latest -g
   ```
